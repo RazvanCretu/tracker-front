@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth";
+
 import Cookies from "js-cookie";
 import axios from "axios";
 
@@ -8,14 +10,14 @@ const API = process.env.API_URL || "http://localhost:1337";
 
 const PrivateRoute = ({ element }) => {
   const { isAuthenticated, loading, setLoading, setUser } = useAuth();
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   useEffect(() => {
     const tk = Cookies.get("token");
 
     if (!tk) {
       navigate("/login", { replace: true });
-    } else {
+    } else if (!isAuthenticated) {
       axios
         .get(`${API}/users/me`, {
           headers: { Authorization: `Bearer ${tk}` },

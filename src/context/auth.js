@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
 
     Cookies.remove("token");
     setUser(null);
-    navigate("/login", { replace: true });
   };
 
   const login = async (e) => {
@@ -34,7 +33,8 @@ export const AuthProvider = ({ children }) => {
     if (jwt) {
       Cookies.set("token", jwt);
       setUser(user);
-      navigate("/dashboard", { replace: true });
+      navigate("/dashboard");
+      setLoading(false);
     }
   };
 
