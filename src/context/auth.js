@@ -20,21 +20,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const login = async (e) => {
-    e.preventDefault();
-
-    const {
-      data: { jwt, user },
-    } = await axios.post(`${API}/auth/local`, {
-      identifier: "test@testmail.com",
-      password: "1234test",
-    });
-
-    if (jwt) {
-      Cookies.set("token", jwt);
-      setUser(user);
-      navigate("/dashboard");
-      setLoading(false);
+  const login = async (data) => {
+    try {
+      const {
+        data: { jwt, user },
+      } = await axios.post(`${API}/auth/local`, data);
+      if (jwt) {
+        Cookies.set("token", jwt);
+        setUser(user);
+        navigate("/dashboard");
+        setLoading(false);
+      }
+    } catch (err) {
+      alert(err);
     }
   };
 
